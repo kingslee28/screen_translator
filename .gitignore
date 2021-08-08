@@ -134,6 +134,10 @@ bin/
 # Documentation
 doc/
 
+# logs
+logs/
+log/
+
 # data
 data/
 *.csv

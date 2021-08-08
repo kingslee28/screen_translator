@@ -1,11 +1,15 @@
 import os
 import yaml
+import logging
+
 from screen_translation_service import ScreenTranslationService
 from text_detection import TextDetector
 from text_translation import Translator
 
 
 if __name__ == '__main__':
+    logging.basicConfig(filename='logs/main.log', format='%(asctime)s %(message)s', datefmt='%Y-%m-%d %H:%M:%S',
+                        level=logging.INFO)
     with open('base/config.yml', 'r') as f:
         cfg = yaml.safe_load(f)
 
