@@ -1,0 +1,18 @@
+screen_capture:
+  display_popup_size: 600x400
+  message_box_width: 550
+  text_width: 40
+  translate_button: s
+  output_filename: tmp.png
+
+text_detection:
+  backend: Google
+  #  backend: api8
+  language: jpn
+
+text_translation:
+  backend: Google
+  src_language: ja
+  src_word_split: ''
+  target_language: zh-TW
+  target_word_split: ''
