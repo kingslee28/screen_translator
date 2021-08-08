@@ -8,6 +8,7 @@ from utils import wrap_text
 class ScreenTranslationService:
 
     def __init__(self, cfg, text_detector, translator):
+        logging.info('Initializing screen translation service...')
         self.text_detector = text_detector
         self.translator = translator
 
