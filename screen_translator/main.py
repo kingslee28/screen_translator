@@ -11,6 +11,7 @@ if __name__ == '__main__':
     logging.basicConfig(filename='logs/main.log', format='%(asctime)s %(message)s', datefmt='%Y-%m-%d %H:%M:%S',
                         level=logging.INFO)
     with open('base/config.yml', 'r') as f:
+        logging.info('Reading config file.')
         cfg = yaml.safe_load(f)
 
     project_id = os.environ.get('GOOGLE_APPLICATION_PROJECT_ID')

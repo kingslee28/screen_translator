@@ -1,3 +1,4 @@
+import logging
 import requests
 from google.cloud import vision
 
@@ -35,7 +36,7 @@ class TextDetector:
         if vertex:
             for text in texts:
                 vertices = ([f'({vertex.x},{vertex.y})' for vertex in text.bounding_poly.vertices])
-                print(f'label: {text.description} bounds: {",".join(vertices)}')
+                logging.info(f'label: {text.description} bounds: {",".join(vertices)}')
         return detection
 
     def api8_detect_text(self, path):

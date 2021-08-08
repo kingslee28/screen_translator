@@ -1,3 +1,4 @@
+import logging
 import tkinter as tk
 import pyautogui
 
@@ -72,11 +73,9 @@ class ScreenTranslationService:
         self.save_screenshot()
         detection = self.text_detector.detect_text_from_image(self.output_filename)
         translation = self.translator.translate_text(detection)
-        print(detection)
-        print(f'--> {translation}')
+        logging.info(detection)
+        logging.info(f'--> {translation}')
         detection = wrap_text(detection, self.text_width, self.translator.source_word_split)
         translation = wrap_text(translation, self.text_width, self.translator.target_word_split)
-        print(detection)
-        print(f'--> {translation}')
         tk.Message(self.display, text=detection, width=self.message_box_width).place(x=10, y=100)
         tk.Message(self.display, text=translation, width=self.message_box_width).place(x=10, y=250)
