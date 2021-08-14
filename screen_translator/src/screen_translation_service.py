@@ -16,6 +16,7 @@ class ScreenTranslationService:
         self.message_box_width = cfg['message_box_width']
         self.text_width = cfg['text_width']
         self.translate_button = cfg['translate_button']
+        self.translated_text_height = int(int(self.display_popup_size.split('x')[1]) / 2)
         self.output_filename = cfg['output_filename']
         self.topx, self.topy, self.botx, self.boty = 0, 0, 0, 0
 
@@ -63,7 +64,7 @@ class ScreenTranslationService:
         self.display.bind(f'<{self.translate_button}>', self.screen_translate)
         tk.Button(self.display, text='Translate', command=self.screen_translate).place(x=10, y=10)
         tk.Label(self.display, text='Original Text').place(x=10, y=60)
-        tk.Label(self.display, text='Translated Text').place(x=10, y=210)
+        tk.Label(self.display, text='Translated Text').place(x=10, y=self.translated_text_height)
         self.root.withdraw()
 
     def save_screenshot(self, *args):
@@ -79,4 +80,5 @@ class ScreenTranslationService:
         detection = wrap_text(detection, self.text_width, self.translator.source_word_split)
         translation = wrap_text(translation, self.text_width, self.translator.target_word_split)
         tk.Message(self.display, text=detection, width=self.message_box_width).place(x=10, y=100)
-        tk.Message(self.display, text=translation, width=self.message_box_width).place(x=10, y=250)
+        tk.Message(self.display, text=translation, width=self.message_box_width).place(
+            x=10, y=self.translated_text_height + 40)
