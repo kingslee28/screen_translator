@@ -5,6 +5,7 @@ import logging
 from screen_translation_service import ScreenTranslationService
 from text_detection import TextDetector
 from text_translation import Translator
+from dictionary_lily import dictionary
 
 
 if __name__ == '__main__':
@@ -18,4 +19,4 @@ if __name__ == '__main__':
 
     text_detector = TextDetector(cfg['text_detection'], api_key)
     translator = Translator(cfg['text_translation'], project_id)
-    screen_translation = ScreenTranslationService(cfg['screen_capture'], text_detector, translator)
+    screen_translation = ScreenTranslationService(cfg['screen_capture'], text_detector, translator, dictionary)
