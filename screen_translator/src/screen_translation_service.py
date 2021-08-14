@@ -76,15 +76,16 @@ class ScreenTranslationService:
         self.save_screenshot()
 
         detection = self.text_detector.detect_text_from_image(self.output_filename)
-        for k, v in self.dictionary.items():
-            detection = detection.replace(k, v)
         detection = wrap_text(detection, self.text_width, self.translator.source_word_split)
         logging.info(detection)
+        tk.Message(self.display, text=detection, width=self.message_box_width).place(x=10, y=100)
+        for i, (k, v) in enumerate(self.dictionary.items()):
+            detection = detection.replace(k, f'<{i}>')
 
         translation = self.translator.translate_text(detection)
+        for i, (k, v) in enumerate(self.dictionary.items()):
+            translation = translation.replace(f'<{i}>', v)
         translation = wrap_text(translation, self.text_width, self.translator.target_word_split)
         logging.info(f'--> {translation}')
-
-        tk.Message(self.display, text=detection, width=self.message_box_width).place(x=10, y=100)
         tk.Message(self.display, text=translation, width=self.message_box_width).place(
             x=10, y=self.translated_text_height + 40)
