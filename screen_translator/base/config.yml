@@ -1,7 +1,6 @@
 screen_capture:
-  display_popup_size: 700x500
-  message_box_width: 650
-  text_width: 65
+  display_popup_size: 600x500
+  text_width: 40
   translate_button: s
   output_filename: tmp.png
 

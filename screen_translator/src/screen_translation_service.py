@@ -14,7 +14,6 @@ class ScreenTranslationService:
         self.dictionary = dictionary
 
         self.display_popup_size = cfg['display_popup_size']
-        self.message_box_width = cfg['message_box_width']
         self.text_width = cfg['text_width']
         self.translate_button = cfg['translate_button']
         self.translated_text_height = int(int(self.display_popup_size.split('x')[1]) / 2)
@@ -78,7 +77,7 @@ class ScreenTranslationService:
         detection = self.text_detector.detect_text_from_image(self.output_filename)
         detection = wrap_text(detection, self.text_width, self.translator.source_word_split)
         logging.info(detection)
-        detection_label = tk.Label(self.display, textvariable=tk.StringVar(name='detection'))
+        detection_label = tk.Label(self.display, textvariable=tk.StringVar(name='detection'), justify='left')
         detection_label.place(x=10, y=100)
         detection_label.setvar('detection', detection)
         for i, (k, v) in enumerate(self.dictionary.items()):
@@ -89,6 +88,6 @@ class ScreenTranslationService:
             translation = translation.replace(f'<{i}>', v)
         translation = wrap_text(translation, self.text_width, self.translator.target_word_split)
         logging.info(f'--> {translation}')
-        translation_label = tk.Label(self.display, textvariable=tk.StringVar(name='translation'))
+        translation_label = tk.Label(self.display, textvariable=tk.StringVar(name='translation'), justify='left')
         translation_label.place(x=10, y=self.translated_text_height + 40)
         translation_label.setvar('translation', translation)
