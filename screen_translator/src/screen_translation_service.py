@@ -8,7 +8,7 @@ from utils import wrap_text
 class ScreenTranslationService:
 
     def __init__(self, cfg, text_detector, translator, dictionary):
-        logging.info('Initializing screen translation service...')
+        logging.info('Initializing screen translation service...\n')
         self.text_detector = text_detector
         self.translator = translator
         self.dictionary = dictionary
@@ -74,20 +74,20 @@ class ScreenTranslationService:
     def screen_translate(self, *args):
         self.save_screenshot()
 
-        detection = self.text_detector.detect_text_from_image(self.output_filename)
-        detection = wrap_text(detection, self.text_width, self.translator.source_word_split)
+        detection = self.text_detector.detect_text_from_image(self.output_filename).replace('\n', '')
         logging.info(detection)
+        detection = wrap_text(detection, self.text_width, self.translator.source_word_split)
         detection_label = tk.Label(self.display, textvariable=tk.StringVar(name='detection'), justify='left')
         detection_label.place(x=10, y=100)
         detection_label.setvar('detection', detection)
         for i, (k, v) in enumerate(self.dictionary.items()):
             detection = detection.replace(k, f'<{i}>')
 
-        translation = self.translator.translate_text(detection)
+        translation = self.translator.translate_text(detection).replace('\n', '')
         for i, (k, v) in enumerate(self.dictionary.items()):
             translation = translation.replace(f'<{i}>', v)
+        logging.info(f'--> {translation}\n')
         translation = wrap_text(translation, self.text_width, self.translator.target_word_split)
-        logging.info(f'--> {translation}')
         translation_label = tk.Label(self.display, textvariable=tk.StringVar(name='translation'), justify='left')
         translation_label.place(x=10, y=self.translated_text_height + 40)
         translation_label.setvar('translation', translation)
