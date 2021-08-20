@@ -1,11 +1,11 @@
 import os
 import yaml
 import logging
+import pandas as pd
 
 from screen_translation_service import ScreenTranslationService
 from text_detection import TextDetector
 from text_translation import Translator
-from dictionary_lily import dictionary
 
 
 if __name__ == '__main__':
@@ -13,6 +13,9 @@ if __name__ == '__main__':
                         handlers=[logging.FileHandler('logs/info.log', encoding='utf-8'), logging.StreamHandler()])
     with open('base/config.yml', 'r') as f:
         cfg = yaml.safe_load(f)
+
+    dictionary = pd.read_csv('dictionary.csv').fillna('')
+    dictionary = dict(dictionary.to_dict('split')['data'])
 
     project_id = os.environ.get('GOOGLE_APPLICATION_PROJECT_ID')
     api_key = os.environ.get('API8_API_KEY')
