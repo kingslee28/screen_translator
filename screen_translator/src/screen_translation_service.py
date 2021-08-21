@@ -19,6 +19,7 @@ class ScreenTranslationService:
         self.display_popup_size = cfg['display_popup_size']
         self.text_width = cfg['text_width']
         self.translate_button = cfg['translate_button']
+        self.translated_text_height = int(int(self.display_popup_size.split('x')[1]) / 2)
         self.output_filename = cfg['output_filename']
         self.topx, self.topy, self.botx, self.boty = 0, 0, 0, 0
 
@@ -80,7 +81,7 @@ class ScreenTranslationService:
         tk.Button(self.display, text='Select Area', command=self.setup_canvas).place(x=100, y=10)
         tk.Button(self.display, text='Reload Dictionary', command=self.load_dictionary).place(x=207, y=10)
         tk.Label(self.display, text='Original Text').place(x=10, y=60)
-        tk.Label(self.display, text='Translated Text').place(x=10, y=int(int(self.display_popup_size.split('x')[1])/2))
+        tk.Label(self.display, text='Translated Text').place(x=10, y=self.translated_text_height)
 
     def save_screenshot(self, *args):
         screenshot = pyautogui.screenshot(region=(self.topx, self.topy, self.botx-self.topx, self.boty-self.topy))
