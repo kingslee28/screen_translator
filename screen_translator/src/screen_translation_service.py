@@ -79,7 +79,7 @@ class ScreenTranslationService:
         self.display.bind(f'<{self.translate_button}>', self.screen_translate)
         tk.Button(self.display, text='Translate', command=self.screen_translate).place(x=10, y=10)
         tk.Button(self.display, text='Select Area', command=self.setup_canvas).place(x=100, y=10)
-        tk.Button(self.display, text='Reload Dictionary', command=self.load_dictionary).place(x=210, y=10)
+        tk.Button(self.display, text='Reload Dictionary', command=self.load_dictionary).place(x=207, y=10)
         tk.Label(self.display, text='Original Text').place(x=10, y=60)
         tk.Label(self.display, text='Translated Text').place(x=10, y=self.translated_text_height)
 
