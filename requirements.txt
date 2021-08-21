@@ -1,3 +1,4 @@
+pandas
 pyautogui
 google-cloud-vision
 google-cloud-translate

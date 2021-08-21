@@ -1,17 +1,19 @@
 import logging
-import tkinter as tk
+import pandas as pd
 import pyautogui
+import tkinter as tk
 
 from utils import wrap_text
 
 
 class ScreenTranslationService:
 
-    def __init__(self, cfg, text_detector, translator, dictionary):
+    def __init__(self, cfg, text_detector, translator, dictionary_path):
         logging.info('Initializing screen translation service...\n')
         self.text_detector = text_detector
         self.translator = translator
-        self.dictionary = dictionary
+        self.dictionary = pd.read_csv(dictionary_path).fillna('')
+        self.dictionary = dict(self.dictionary.to_dict('split')['data'])
 
         self.display_popup_size = cfg['display_popup_size']
         self.text_width = cfg['text_width']
