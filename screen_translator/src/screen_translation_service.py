@@ -31,6 +31,8 @@ class ScreenTranslationService:
         self.root.attributes('-alpha', 0)
 
         self.display = None
+        self.detection_label = None
+        self.translation_label = None
         self.launch_display()
         self.mask = None
         self.canvas = None
@@ -82,6 +84,10 @@ class ScreenTranslationService:
         tk.Button(self.display, text='Reload Dictionary', command=self.load_dictionary).place(x=207, y=10)
         tk.Label(self.display, text='Original Text').place(x=10, y=60)
         tk.Label(self.display, text='Translated Text').place(x=10, y=self.translated_text_height)
+        self.detection_label = tk.Label(self.display, textvariable=tk.StringVar(name='detection'), justify='left')
+        self.detection_label.place(x=10, y=100)
+        self.translation_label = tk.Label(self.display, textvariable=tk.StringVar(name='translation'), justify='left')
+        self.translation_label.place(x=10, y=self.translated_text_height + 40)
 
     def save_screenshot(self, *args):
         screenshot = pyautogui.screenshot(region=(self.topx, self.topy, self.botx-self.topx, self.boty-self.topy))
@@ -93,9 +99,7 @@ class ScreenTranslationService:
         detection = self.text_detector.detect_text_from_image(self.output_filename).replace('\n', '')
         logging.info(detection)
         detection = wrap_text(detection, self.text_width, self.translator.source_word_split)
-        detection_label = tk.Label(self.display, textvariable=tk.StringVar(name='detection'), justify='left')
-        detection_label.place(x=10, y=100)
-        detection_label.setvar('detection', detection)
+        self.detection_label.setvar('detection', detection)
         for i, (k, v) in enumerate(self.dictionary.items()):
             detection = detection.replace(k, f'<{i}>')
 
@@ -104,6 +108,4 @@ class ScreenTranslationService:
             translation = translation.replace(f'<{i}>', v)
         logging.info(f'--> {translation}\n')
         translation = wrap_text(translation, self.text_width, self.translator.target_word_split)
-        translation_label = tk.Label(self.display, textvariable=tk.StringVar(name='translation'), justify='left')
-        translation_label.place(x=10, y=self.translated_text_height + 40)
-        translation_label.setvar('translation', translation)
+        self.translation_label.setvar('translation', translation)
