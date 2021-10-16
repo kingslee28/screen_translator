@@ -18,6 +18,7 @@ class ScreenTranslationService:
 
         self.display_popup_size = cfg['display_popup_size']
         self.text_width = cfg['text_width']
+        self.font_size = cfg['font_size']
         self.translate_button = cfg['translate_button']
         self.translated_text_height = int(int(self.display_popup_size.split('x')[1]) / 2)
         self.output_filename = cfg['output_filename']
@@ -88,6 +89,7 @@ class ScreenTranslationService:
         self.detection_label.place(x=10, y=100)
         self.translation_label = tk.Label(self.display, textvariable=tk.StringVar(name='translation'), justify='left')
         self.translation_label.place(x=10, y=self.translated_text_height + 40)
+        self.translation_label.config(font=('Helvetica bold', self.font_size))
 
     def save_screenshot(self, *args):
         screenshot = pyautogui.screenshot(region=(self.topx, self.topy, self.botx-self.topx, self.boty-self.topy))
