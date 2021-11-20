@@ -38,3 +38,20 @@ class Translator:
         response = self.client.get_supported_languages(parent=parent)
         for language in response.languages:
             print(f'Language Code: {language.language_code}')
+
+    def create_glossary(self, glossary_id, input_uri):
+        location = 'us-central1'
+        name = self.client.glossary_path(Translator.__project_id, location, glossary_id)
+        language_codes_set = translate.types.Glossary.LanguageCodesSet(
+            language_codes=[self.source_language, self.target_language]
+        )
+        gcs_source = translate.types.GcsSource(input_uri=input_uri)
+        input_config = translate.types.GlossaryInputConfig(gcs_source=gcs_source)
+        glossary = translate.types.Glossary(
+            name=name, language_codes_set=language_codes_set, input_config=input_config
+        )
+        parent = f'projects/{Translator.__project_id}/locations/{location}'
+        operation = self.client.create_glossary(parent=parent, glossary=glossary)
+        result = operation.result(timeout=180)
+        print("Created: {}".format(result.name))
+        print("Input Uri: {}".format(result.input_config.gcs_source.input_uri))
