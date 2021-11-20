@@ -19,4 +19,4 @@ if __name__ == '__main__':
     text_detector = TextDetector(cfg['text_detection'], api_key)
     translator = Translator(cfg['text_translation'], project_id)
     # translator.create_glossary(glossary_id='assault_lily', input_uri='gs://kingslee28_api_storage/glossary.csv')
-    screen_translation = ScreenTranslationService(cfg['screen_capture'], text_detector, translator, 'dictionary.csv')
+    screen_translation = ScreenTranslationService(cfg['screen_capture'], text_detector, translator)

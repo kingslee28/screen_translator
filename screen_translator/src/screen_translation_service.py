@@ -8,13 +8,10 @@ from utils import wrap_text
 
 class ScreenTranslationService:
 
-    def __init__(self, cfg, text_detector, translator, dictionary_path):
+    def __init__(self, cfg, text_detector, translator):
         logging.info('Initializing screen translation service...\n')
         self.text_detector = text_detector
         self.translator = translator
-        self.dictionary_path = dictionary_path
-        self.dictionary = None
-        self.load_dictionary()
 
         self.display_popup_size = cfg['display_popup_size']
         self.text_width = cfg['text_width']
@@ -39,10 +36,6 @@ class ScreenTranslationService:
         self.canvas = None
         self.rect_id = None
         self.root.mainloop()
-
-    def load_dictionary(self, *args):
-        dictionary = pd.read_csv(self.dictionary_path).fillna('')
-        self.dictionary = dict(dictionary.to_dict('split')['data'])
 
     def setup_canvas(self, *args):
         self.mask = tk.Tk()
@@ -82,7 +75,6 @@ class ScreenTranslationService:
         self.display.bind(f'<{self.translate_button}>', self.screen_translate)
         tk.Button(self.display, text='Translate', command=self.screen_translate).place(x=10, y=10)
         tk.Button(self.display, text='Select Area', command=self.setup_canvas).place(x=100, y=10)
-        tk.Button(self.display, text='Reload Dictionary', command=self.load_dictionary).place(x=207, y=10)
         tk.Label(self.display, text='Original Text').place(x=10, y=60)
         tk.Label(self.display, text='Translated Text').place(x=10, y=self.translated_text_height)
         self.detection_label = tk.Label(self.display, textvariable=tk.StringVar(name='detection'), justify='left')
