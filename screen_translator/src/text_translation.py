@@ -5,8 +5,9 @@ from google.cloud import translate_v3 as translate
 class Translator:
     __project_id = None
 
-    def __init__(self, cfg, project_id):
+    def __init__(self, cfg, project_id, glossary_id=None):
         self.backend = cfg['backend']
+        self.location = cfg['location']
         self.source_language = cfg['src_language']
         self.source_word_split = cfg['src_word_split']
         self.target_language = cfg['target_language']
@@ -14,6 +15,7 @@ class Translator:
         self.client = None
         if self.backend == 'Google':
             self.client = translate.TranslationServiceClient()
+            self.glossary_id = glossary_id
             Translator.__project_id = project_id
 
     def translate_text(self, text, **kwargs):
@@ -21,10 +23,11 @@ class Translator:
             return self.google_translate_text(text)
 
     def google_translate_text(self, text):
-        location = 'us-central1'
-        parent = f'projects/{Translator.__project_id}/locations/{location}'
-        glossary = self.client.glossary_path(Translator.__project_id, "us-central1", 'assault_lily')
-        glossary_config = translate.TranslateTextGlossaryConfig(glossary=glossary)
+        parent = f'projects/{Translator.__project_id}/locations/{self.location}'
+        glossary_config = None
+        if self.glossary_id is not None:
+            glossary = self.client.glossary_path(Translator.__project_id, self.location, self.glossary_id)
+            glossary_config = translate.TranslateTextGlossaryConfig(glossary=glossary)
 
         response = self.client.translate_text(
             request={
@@ -34,7 +37,10 @@ class Translator:
                 'parent': parent,
                 'glossary_config': glossary_config}
         )
-        return response.glossary_translations[0].translated_text
+        if self.glossary_id is not None:
+            return response.glossary_translations[0].translated_text
+        else:
+            return response.translations[0].translated_text
 
     def google_list_language_code(self):
         parent = f'projects/{Translator.__project_id}'
@@ -43,8 +49,7 @@ class Translator:
             print(f'Language Code: {language.language_code}')
 
     def create_glossary(self, glossary_id, input_uri):
-        location = 'us-central1'
-        name = self.client.glossary_path(Translator.__project_id, location, glossary_id)
+        name = self.client.glossary_path(Translator.__project_id, self.location, glossary_id)
         language_codes_set = translate.types.Glossary.LanguageCodesSet(
             language_codes=[self.source_language, self.target_language]
         )
@@ -53,7 +58,7 @@ class Translator:
         glossary = translate.types.Glossary(
             name=name, language_codes_set=language_codes_set, input_config=input_config
         )
-        parent = f'projects/{Translator.__project_id}/locations/{location}'
+        parent = f'projects/{Translator.__project_id}/locations/{self.location}'
         operation = self.client.create_glossary(parent=parent, glossary=glossary)
         result = operation.result(timeout=180)
         print("Created: {}".format(result.name))

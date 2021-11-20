@@ -12,6 +12,7 @@ text_detection:
 
 text_translation:
   backend: Google
+  location: 'us-central1'
   src_language: ja
   src_word_split: ''
   target_language: zh-TW

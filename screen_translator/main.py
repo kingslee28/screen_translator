@@ -17,6 +17,6 @@ if __name__ == '__main__':
     api_key = os.environ.get('API8_API_KEY')
 
     text_detector = TextDetector(cfg['text_detection'], api_key)
-    translator = Translator(cfg['text_translation'], project_id)
+    translator = Translator(cfg['text_translation'], project_id, 'assault_lily')
     # translator.create_glossary(glossary_id='assault_lily', input_uri='gs://kingslee28_api_storage/glossary.csv')
     screen_translation = ScreenTranslationService(cfg['screen_capture'], text_detector, translator)
