@@ -102,12 +102,8 @@ class ScreenTranslationService:
         logging.info(detection)
         detection = wrap_text(detection, self.text_width, self.translator.source_word_split)
         self.detection_label.setvar('detection', detection)
-        for i, (k, v) in enumerate(self.dictionary.items()):
-            detection = detection.replace(k, f'<{i}>')
 
         translation = self.translator.translate_text(detection).replace('\n', '')
-        for i, (k, v) in enumerate(self.dictionary.items()):
-            translation = translation.replace(f'<{i}>', v)
         logging.info(f'--> {translation}\n')
         translation = wrap_text(translation, self.text_width, self.translator.target_word_split)
         self.translation_label.setvar('translation', translation)
